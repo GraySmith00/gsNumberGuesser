@@ -10,6 +10,7 @@ function randomNumber(minNum, maxNum) {
 }
 
 function compareGuessToNumber(guess, num, minNum, maxNum) {
+  s;
   if (isNaN(guess)) {
     return "Ooooooops! Sorry we can only accept numbers here!";
   }
