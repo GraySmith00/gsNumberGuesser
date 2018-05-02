@@ -14,12 +14,12 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
     return "Ooooooops! Sorry we can only accept numbers here!";
   }
   if (guess > maxNum) {
-    return "Oooooops! That number is too large and is outside the realm of this game!";
+    return `Oooooops! That number is too large, you need to guess a number in between ${minNum} and ${maxNum}!`;
   } else if (guess < minNum) {
-    return "Oooooops! That number is too low and is outside the realm of this game!";
+    return `Oooooops! That number is too small, you need to guess a number in between ${minNum} and ${maxNum}!`;
   } else {
     if (guess === num) {
-      return "BOOM!";
+      return `BOOM! That was the number!`;
     } else if (guess > num) {
       return "That is too high";
     } else {
@@ -28,9 +28,14 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
   }
 }
 
-resetButton.addEventListener("click", () => {
+function reset() {
   guessForm.reset();
   guessDisplay.innerHTML = ``;
+  const numToGuess = randomNumber(1, 100);
+}
+
+resetButton.addEventListener("click", function() {
+  reset();
 });
 
 clearFormButton.addEventListener("click", () => {
@@ -42,11 +47,15 @@ function playGame(e, guess, num, minNum, maxNum) {
   guessDisplay.innerHTML = `
   You guessed ${guess}. ${compareGuessToNumber(
     parseInt(guess),
-    num
-  )}. The number was ${num}`;
+    num,
+    minNum,
+    maxNum
+  )}.`;
   guessForm.reset();
 }
 
+let numToGuess = randomNumber(1, 100);
+
 guessSubmit.addEventListener("click", function(e) {
-  playGame(e, guessInput.value, randomNumber(1, 100), 1, 100);
+  playGame(e, guessInput.value, numToGuess, 1, 100);
 });
