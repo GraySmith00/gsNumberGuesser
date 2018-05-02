@@ -32,6 +32,11 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
   }
 }
 
+function setInitialHTML(minNum, maxNum) {
+  lastGuessWas.innerHTML = `Guess a number between ${minNum} and ${maxNum} to start the game!`;
+}
+setInitialHTML(1, 100);
+
 function reset(minNum, maxNum) {
   guessForm.reset();
   lastGuessWas.innerHTML = `Guess a number between ${minNum} and ${maxNum} to start the game!`;
@@ -40,6 +45,8 @@ function reset(minNum, maxNum) {
   const numToGuess = randomNumber(1, 100);
   counter = 0;
   guessCounterDisplay.innerHTML = ``;
+  isInputPopulated();
+  isAnythingToReset(1, 100);
 }
 
 function submitGuess(e, guess, num, minNum, maxNum) {
@@ -53,10 +60,38 @@ function submitGuess(e, guess, num, minNum, maxNum) {
   Guesses: ${counter}
   `;
   guessForm.reset();
+  isAnythingToReset(1, 100);
 }
 
 let numToGuess = randomNumber(1, 100);
 let counter = 0;
+
+function isInputPopulated() {
+  console.log(guessInput.value.length);
+  if (guessInput.value.length > 0) {
+    clearFormButton.disabled = false;
+  } else {
+    clearFormButton.disabled = true;
+  }
+}
+isInputPopulated();
+
+function isAnythingToReset(minNum, maxNum) {
+  if (
+    // guessInput.value.length === 0 &&
+    lastGuessWas.innerHTML ===
+    `Guess a number between ${minNum} and ${maxNum} to start the game!`
+  ) {
+    resetButton.disabled = true;
+  } else {
+    resetButton.disabled = false;
+  }
+}
+isAnythingToReset(1, 100);
+
+guessInput.addEventListener("keyup", function() {
+  isInputPopulated();
+});
 
 guessSubmit.addEventListener("click", function(e) {
   submitGuess(e, guessInput.value, numToGuess, 1, 100);
@@ -68,4 +103,5 @@ resetButton.addEventListener("click", function() {
 
 clearFormButton.addEventListener("click", () => {
   guessForm.reset();
+  isInputPopulated();
 });
