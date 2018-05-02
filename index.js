@@ -1,7 +1,11 @@
 const guessForm = document.querySelector("#guess-form");
 const guessInput = document.querySelector("#guess-input");
 const guessSubmit = document.querySelector("#guess-submit");
-const guessDisplay = document.querySelector("#guess-display");
+// const guessDisplay = document.querySelector("#guess-display");
+const lastGuessWas = document.querySelector("#last-guess-was");
+const guessNumberDisplay = document.querySelector("#guess-number-display");
+const guessAlert = document.querySelector("#guess-alert");
+const guessCounterDisplay = document.querySelector("#guess-counter-display");
 const resetButton = document.querySelector("#reset-button");
 const clearFormButton = document.querySelector("#clear-form-button");
 
@@ -28,34 +32,40 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
   }
 }
 
-function reset() {
+function reset(minNum, maxNum) {
   guessForm.reset();
-  guessDisplay.innerHTML = ``;
+  lastGuessWas.innerHTML = `Guess a number between ${minNum} and ${maxNum} to start the game!`;
+  guessNumberDisplay.innerHTML = ``;
+  guessAlert.innerHTML = ``;
   const numToGuess = randomNumber(1, 100);
+  counter = 0;
+  guessCounterDisplay.innerHTML = ``;
 }
 
-resetButton.addEventListener("click", function() {
-  reset();
-});
-
-clearFormButton.addEventListener("click", () => {
-  guessForm.reset();
-});
-
-function playGame(e, guess, num, minNum, maxNum) {
+function submitGuess(e, guess, num, minNum, maxNum) {
   e.preventDefault();
-  guessDisplay.innerHTML = `
-  You guessed ${guess}. ${compareGuessToNumber(
-    parseInt(guess),
-    num,
-    minNum,
-    maxNum
-  )}.`;
+  counter += 1;
+  lastGuessWas.innerHTML = `Your last guess was`;
+  guessNumberDisplay.innerHTML = `${guess}`;
+  guessAlert.innerHTML = `
+   ${compareGuessToNumber(parseInt(guess), num, minNum, maxNum)}`;
+  guessCounterDisplay.innerHTML = `
+  Guesses: ${counter}
+  `;
   guessForm.reset();
 }
 
 let numToGuess = randomNumber(1, 100);
+let counter = 0;
 
 guessSubmit.addEventListener("click", function(e) {
-  playGame(e, guessInput.value, numToGuess, 1, 100);
+  submitGuess(e, guessInput.value, numToGuess, 1, 100);
+});
+
+resetButton.addEventListener("click", function() {
+  reset(1, 100);
+});
+
+clearFormButton.addEventListener("click", () => {
+  guessForm.reset();
 });
