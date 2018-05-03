@@ -16,10 +16,19 @@
 
   <form id="guess-form">
     <input type="number" id="guess-input" placeholder="give your best guess between 1 and 100!">
-    <input type="submit" id="guess-submit">
+    <button type="submit" id="guess-submit">Submit</button>
   </form>
 
-  <div id="guess-display">
+  <form>
+    <input type="number" id="min-num" placeholder="min number">
+    <input type="number" id="max-num" placeholder="max number">
+    <button type="submit" id="min-max-submit">Set Min and Max</button>
+  </form>
+
+  <main>
+    <div id="min-max-display">
+
+    </div>
     <div id="last-guess-was">
 
     </div>
@@ -29,11 +38,12 @@
     <div id="guess-alert">
 
     </div>
-  </div>
+    <div id="guess-counter-display">
 
-  <div id="guess-counter-display">
+    </div>
+  </main>
 
-  </div>
+
 
   <button id="clear-form-button">Clear Form</button>
   <button id="reset-button">
