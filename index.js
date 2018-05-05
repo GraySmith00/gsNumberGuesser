@@ -13,9 +13,7 @@ const maxNumInput = document.querySelector("#max-num");
 const minMaxSubmit = document.querySelector("#min-max-submit");
 const minMaxDisplay = document.querySelector("#min-max-display");
 
-function randomNumber(minNum, maxNum) {
-  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
-}
+console.log(minNumInput.value.length > 0);
 
 function compareGuessToNumber(guess, num, minNum, maxNum) {
   if (isNaN(guess)) {
@@ -41,20 +39,28 @@ function setInitialHTML() {
 }
 setInitialHTML();
 
-function reset(minNum, maxNum) {
+function reset() {
   guessForm.reset();
   lastGuessWas.innerHTML = `Set the min and max to start the game!`;
   guessNumberDisplay.innerHTML = ``;
   guessAlert.innerHTML = ``;
-  const numToGuess = null;
   counter = 0;
   guessCounterDisplay.innerHTML = ``;
   isInputPopulated();
-  isAnythingToReset(1, 100);
+  isAnythingToReset();
+  minMaxDisplay.innerHTML = "";
+  minNumInput.value = null;
+  maxNumInput.value = null;
+  numToGuess = null;
 }
 
 function submitGuess(e, guess, num, minNum, maxNum) {
   e.preventDefault();
+  if (!minNum || !maxNum) {
+    lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
+    guessForm.reset();
+    return;
+  }
   counter += 1;
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
@@ -64,10 +70,10 @@ function submitGuess(e, guess, num, minNum, maxNum) {
   Guesses: ${counter}
   `;
   guessForm.reset();
-  isAnythingToReset(1, 100);
+  isAnythingToReset();
 }
 
-let numToGuess = randomNumber(maxNumInput.value, maxNumInput.value);
+//let numToGuess = randomNumber(maxNumInput.value, maxNumInput.value);
 let counter = 0;
 
 function isInputPopulated() {
@@ -80,24 +86,35 @@ function isInputPopulated() {
 isInputPopulated();
 
 function isAnythingToReset() {
-  if (
-    // guessInput.value.length === 0 &&
-    lastGuessWas.innerHTML === `Set the min and max to start the game!`
-  ) {
+  // console.log(minNumInput.value);
+  if (minNumInput.value.length === 0 && maxNumInput.value.length === 0) {
     resetButton.disabled = true;
   } else {
     resetButton.disabled = false;
   }
 }
-isAnythingToReset(maxNumInput.value, maxNumInput.value);
+isAnythingToReset();
 
-minMaxSubmit.addEventListener("click", function(e) {
-  e.preventDefault();
-  const numToGuess = randomNumber(minNumInput.value, maxNumInput.value);
-  console.log(numToGuess);
+function randomNumber(minNumStr, maxNumStr) {
+  const minNum = Number(minNumStr);
+  const maxNum = Number(maxNumStr);
+  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+}
+
+function setMinAndMaxValues() {
   minMaxDisplay.innerHTML = `Min Number: ${minNumInput.value} Max Number: ${
     maxNumInput.value
   }`;
+  lastGuessWas.innerHTML = ``;
+  isAnythingToReset();
+}
+
+let numToGuess = null;
+minMaxSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
+  setMinAndMaxValues();
+  numToGuess = randomNumber(minNumInput.value, maxNumInput.value);
+  console.log(numToGuess);
 });
 
 guessInput.addEventListener("keyup", function() {

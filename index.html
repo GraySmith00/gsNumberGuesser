@@ -14,21 +14,23 @@
       <span>Number</span>Guesser</h1>
   </header>
 
-  <form id="guess-form">
-    <input type="number" id="guess-input" placeholder="give your best guess between 1 and 100!">
-    <button type="submit" id="guess-submit">Submit</button>
-  </form>
-
   <form>
-    <input type="number" id="min-num" placeholder="min number">
-    <input type="number" id="max-num" placeholder="max number">
+    <input type="number" id="min-num" placeholder="min number" autocomplete="off">
+    <input type="number" id="max-num" placeholder="max number" autocomplete="off">
     <button type="submit" id="min-max-submit">Set Min and Max</button>
   </form>
 
-  <main>
-    <div id="min-max-display">
+  <div id="min-max-display">
 
-    </div>
+  </div>
+
+  <form id="guess-form">
+    <input type="number" id="guess-input" placeholder="Guess a Number!" autocomplete="off">
+    <button type="submit" id="guess-submit">Submit</button>
+  </form>
+
+  <main>
+
     <div id="last-guess-was">
 
     </div>
