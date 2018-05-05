@@ -8,6 +8,7 @@ const guessAlert = document.querySelector("#guess-alert");
 const guessCounterDisplay = document.querySelector("#guess-counter-display");
 const resetButton = document.querySelector("#reset-button");
 const clearFormButton = document.querySelector("#clear-form-button");
+const minMaxForm = document.querySelector("#min-max-form");
 const minNumInput = document.querySelector("#min-num");
 const maxNumInput = document.querySelector("#max-num");
 const minMaxSubmit = document.querySelector("#min-max-submit");
@@ -35,23 +36,24 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
 }
 
 function setInitialHTML() {
-  lastGuessWas.innerHTML = `Set the min and max to start the game!`;
+  minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
 }
 setInitialHTML();
 
 function reset() {
   guessForm.reset();
-  lastGuessWas.innerHTML = `Set the min and max to start the game!`;
+  minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
   guessNumberDisplay.innerHTML = ``;
   guessAlert.innerHTML = ``;
   counter = 0;
   guessCounterDisplay.innerHTML = ``;
   isInputPopulated();
   isAnythingToReset();
-  minMaxDisplay.innerHTML = "";
+  lastGuessWas.innerHTML = "";
   minNumInput.value = null;
   maxNumInput.value = null;
   numToGuess = null;
+  minMaxForm.classList.remove("display-none");
 }
 
 function submitGuess(e, guess, num, minNum, maxNum) {
@@ -105,7 +107,7 @@ function setMinAndMaxValues() {
   minMaxDisplay.innerHTML = `Min Number: ${minNumInput.value} Max Number: ${
     maxNumInput.value
   }`;
-  lastGuessWas.innerHTML = ``;
+
   isAnythingToReset();
 }
 
@@ -113,7 +115,9 @@ let numToGuess = null;
 minMaxSubmit.addEventListener("click", function(e) {
   e.preventDefault();
   setMinAndMaxValues();
+  lastGuessWas.innerHTML = ``;
   numToGuess = randomNumber(minNumInput.value, maxNumInput.value);
+  minMaxForm.classList.add("display-none");
   console.log(numToGuess);
 });
 

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Number Guesser</title>
+  <link rel="stylesheet" href="./main.css">
 </head>
 
 <body>
@@ -14,15 +15,17 @@
       <span>Number</span>Guesser</h1>
   </header>
 
-  <form>
+  <div id="min-max-display">
+
+  </div>
+
+  <form id="min-max-form">
     <input type="number" id="min-num" placeholder="min number" autocomplete="off">
     <input type="number" id="max-num" placeholder="max number" autocomplete="off">
     <button type="submit" id="min-max-submit">Set Min and Max</button>
   </form>
 
-  <div id="min-max-display">
 
-  </div>
 
   <form id="guess-form">
     <input type="number" id="guess-input" placeholder="Guess a Number!" autocomplete="off">
