@@ -35,6 +35,13 @@ function compareGuessToNumber(guess, num, minNum, maxNum) {
   }
 }
 
+function areMinAndMaxSet() {
+  if (minNumInput.value.length === 0 || maxNumInput.value.length === 0) {
+    guessForm.classList.add("display-none");
+  }
+}
+areMinAndMaxSet();
+
 function setInitialHTML() {
   minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
 }
@@ -54,6 +61,7 @@ function reset() {
   maxNumInput.value = null;
   numToGuess = null;
   minMaxForm.classList.remove("display-none");
+  areMinAndMaxSet();
 }
 
 function submitGuess(e, guess, num, minNum, maxNum) {
@@ -119,6 +127,7 @@ minMaxSubmit.addEventListener("click", function(e) {
   numToGuess = randomNumber(minNumInput.value, maxNumInput.value);
   minMaxForm.classList.add("display-none");
   console.log(numToGuess);
+  guessForm.classList.remove("display-none");
 });
 
 guessInput.addEventListener("keyup", function() {
