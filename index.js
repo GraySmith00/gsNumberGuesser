@@ -44,6 +44,7 @@ areMinAndMaxSet();
 
 function setInitialHTML() {
   minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
+  resetButton.classList.add("display-none");
 }
 setInitialHTML();
 
@@ -83,7 +84,6 @@ function submitGuess(e, guess, num, minNum, maxNum) {
   isAnythingToReset();
 }
 
-//let numToGuess = randomNumber(maxNumInput.value, maxNumInput.value);
 let counter = 0;
 
 function isInputPopulated() {
@@ -128,9 +128,18 @@ minMaxSubmit.addEventListener("click", function(e) {
   minMaxForm.classList.add("display-none");
   console.log(numToGuess);
   guessForm.classList.remove("display-none");
+  resetButton.classList.remove("display-none");
 });
 
 guessInput.addEventListener("keyup", function() {
+  isInputPopulated();
+});
+
+minNumInput.addEventListener("keyup", function() {
+  isInputPopulated();
+});
+
+maxNumInput.addEventListener("keyup", function() {
   isInputPopulated();
 });
 
