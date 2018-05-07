@@ -112,14 +112,15 @@ function randomNumber(minNumStr, maxNumStr) {
 }
 
 function setMinAndMaxValues() {
-  minMaxDisplay.innerHTML = `Min Number: ${minNumInput.value} Max Number: ${
-    maxNumInput.value
-  }`;
+  minMaxDisplay.innerHTML = `<p>Min Number: <span>${
+    minNumInput.value
+  }</span> Max Number: <span>${maxNumInput.value}</span></p>`;
 
   isAnythingToReset();
 }
 
 let numToGuess = null;
+
 minMaxSubmit.addEventListener("click", function(e) {
   e.preventDefault();
   setMinAndMaxValues();
