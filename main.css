@@ -77,14 +77,57 @@ main {
   margin-top: 20px;
 }
 
+#min-max-display {
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #404041;
+  letter-spacing: 1.5px;
+}
+
 #guess-form {
   display: flex;
   flex-direction: column;
   margin: 20px;
+  min-width: 500px;
 }
 
 .guess-form-buttons {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#guess-form button {
+  min-width: 220px;
+}
+
+#last-guess-was {
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #404041;
+}
+
+#guess-number-display {
+  color: #eb008b;
+  font-size: 12rem;
+}
+
+#guess-alert {
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #404041;
+}
+
+#guess-counter-display {
+  margin-top: 20px;
+  letter-spacing: 1.5px;
+  font-weight: bold;
+  font-size: 1.8rem;
+}
+
+#reset-button {
+  min-width: 500px;
+  margin: 20px auto;
 }
 
 .display-none {
