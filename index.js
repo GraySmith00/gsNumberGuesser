@@ -98,8 +98,6 @@ function reset() {
 //========================================================
 function submitGuess(e, guess, num) {
   e.preventDefault();
-  console.log(minNum);
-  console.log(maxNum);
   if (minNum === null || maxNum === null) {
     lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
     guessForm.reset();
