@@ -16,8 +16,8 @@ const minMaxDisplay = document.querySelector("#min-max-display");
 let gameCounter = 0;
 let guessCounter = 0;
 let numToGuess = null;
-let minNum;
-let maxNum;
+let minNum = null;
+let maxNum = null;
 
 //===========================================================================================================
 // FUNCTIONS
@@ -43,7 +43,7 @@ setInitialState();
 // Are Min and Max Set? Function
 //========================================================
 function areMinAndMaxSet() {
-  if (minNumInput.value.length === 0 || maxNumInput.value.length === 0) {
+  if (minNum === null || maxNum === null) {
     guessForm.classList.add("display-none");
   }
 }
@@ -98,7 +98,9 @@ function reset() {
 //========================================================
 function submitGuess(e, guess, num) {
   e.preventDefault();
-  if (!minNum || !maxNum) {
+  console.log(minNum);
+  console.log(maxNum);
+  if (minNum === null || maxNum === null) {
     lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
     guessForm.reset();
     return;
@@ -128,7 +130,6 @@ function compareGuessToNumber(guess, num) {
   } else {
     if (guess === num) {
       gameCounter += 1;
-      console.log(gameCounter);
       minNum -= 10;
       maxNum += 10;
       setMinAndMaxValues();
