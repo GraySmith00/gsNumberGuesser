@@ -57,7 +57,7 @@ function randomNumber() {
 
 // Set Min Max Values Funtion
 //========================================================
-function setMinAndMaxValues() {
+function displayMinMaxValues() {
   minMaxDisplay.innerHTML = `<p>Min Number: <span>${minNum}</span> Max Number: <span>${maxNum}</span></p>`;
   isAnythingToReset();
 }
@@ -128,10 +128,16 @@ function compareGuessToNumber(guess, num) {
   } else {
     if (guess === num) {
       gameCounter += 1;
-      minNum -= 10;
-      maxNum += 10;
-      setMinAndMaxValues();
-      return `BOOM! That was the number!`;
+      if (gameCounter < 3) {
+        minNum -= 10;
+        maxNum += 10;
+        displayMinMaxValues();
+        numToGuess = randomNumber();
+        console.log(numToGuess);
+        return `BOOM! That was the number! The Min and Max are expanding!!!`;
+      } else {
+        return `BOOM! That was the number! You've Won the Game!!!!!`;
+      }
     } else if (guess > num) {
       return "That is too high";
     } else {
@@ -150,8 +156,9 @@ minMaxSubmit.addEventListener("click", function(e) {
   e.preventDefault();
   minNum = Number(minNumInput.value);
   maxNum = Number(maxNumInput.value);
-  setMinAndMaxValues();
+  displayMinMaxValues();
   numToGuess = randomNumber();
+  console.log(numToGuess);
   minMaxForm.classList.add("display-none");
   guessForm.classList.remove("display-none");
   resetButton.classList.remove("display-none");
