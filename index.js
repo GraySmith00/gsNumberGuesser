@@ -68,7 +68,6 @@ function displayMinMaxValues() {
 //========================================================
 function isInputPopulated() {
   if (guessInput.value) {
-    console.log(guessInput.value);
     clearFormButton.disabled = false;
   } else {
     clearFormButton.disabled = true;
@@ -163,6 +162,11 @@ minMaxSubmit.addEventListener("click", function(e) {
   e.preventDefault();
   minNum = Number(minNumInput.value);
   maxNum = Number(maxNumInput.value);
+  if (minNum > maxNum) {
+    minMaxDisplay.innerHTML = `Oooooops! Your Min number can't be greater than your Max number!`;
+    minMaxForm.reset();
+    return;
+  }
   displayMinMaxValues();
   numToGuess = randomNumber();
   console.log(numToGuess);
