@@ -36,6 +36,8 @@ function setInitialState() {
   lastGuessWas.innerHTML = "";
   minNumInput.value = null;
   maxNumInput.value = null;
+  minNum = null;
+  maxNum = null;
   numToGuess = null;
 }
 setInitialState();
