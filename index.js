@@ -1,7 +1,6 @@
 const guessForm = document.querySelector("#guess-form");
 const guessInput = document.querySelector("#guess-input");
 const guessSubmit = document.querySelector("#guess-submit");
-// const guessDisplay = document.querySelector("#guess-display");
 const lastGuessWas = document.querySelector("#last-guess-was");
 const guessNumberDisplay = document.querySelector("#guess-number-display");
 const guessAlert = document.querySelector("#guess-alert");
@@ -13,8 +12,6 @@ const minNumInput = document.querySelector("#min-num");
 const maxNumInput = document.querySelector("#max-num");
 const minMaxSubmit = document.querySelector("#min-max-submit");
 const minMaxDisplay = document.querySelector("#min-max-display");
-
-console.log(minNumInput.value.length > 0);
 
 function compareGuessToNumber(guess, num, minNum, maxNum) {
   if (isNaN(guess)) {
@@ -53,7 +50,7 @@ function reset() {
   minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
   guessNumberDisplay.innerHTML = ``;
   guessAlert.innerHTML = ``;
-  counter = 0;
+  guessCounter = 0;
   guessCounterDisplay.innerHTML = ``;
   isInputPopulated();
   isAnythingToReset();
@@ -72,19 +69,19 @@ function submitGuess(e, guess, num, minNum, maxNum) {
     guessForm.reset();
     return;
   }
-  counter += 1;
+  guessCounter += 1;
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
   guessAlert.innerHTML = `
    ${compareGuessToNumber(parseInt(guess), num, minNum, maxNum)}`;
   guessCounterDisplay.innerHTML = `
-  Guesses: ${counter}
+  Guesses: ${guessCounter}
   `;
   guessForm.reset();
   isAnythingToReset();
 }
 
-let counter = 0;
+let guessCounter = 0;
 
 function isInputPopulated() {
   if (guessInput.value.length > 0) {

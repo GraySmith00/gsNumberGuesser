@@ -47,6 +47,7 @@ button:disabled {
 
 button:hover {
   background-color: #eb008b;
+  transition: 0.4s;
 }
 
 input {
