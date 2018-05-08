@@ -67,7 +67,8 @@ function displayMinMaxValues() {
 // Is Input Populated? Function
 //========================================================
 function isInputPopulated() {
-  if (guessInput.value.length > 0) {
+  if (guessInput.value) {
+    console.log(guessInput.value);
     clearFormButton.disabled = false;
   } else {
     clearFormButton.disabled = true;
@@ -78,7 +79,7 @@ isInputPopulated();
 // Is Anything to Reset? Function
 //========================================================
 function isAnythingToReset() {
-  if (minNumInput.value.length === 0 && maxNumInput.value.length === 0) {
+  if (!minNumInput.value && !maxNumInput.value) {
     resetButton.disabled = true;
   } else {
     resetButton.disabled = false;
@@ -131,11 +132,7 @@ function compareGuessToNumber(guess, num) {
     if (guess === num) {
       gameCounter += 1;
       if (gameCounter < 3) {
-        minNum -= 10;
-        maxNum += 10;
-        displayMinMaxValues();
-        numToGuess = randomNumber();
-        console.log(numToGuess);
+        levelUp();
         return `BOOM! That was the number! The Min and Max are expanding!!!`;
       } else {
         return `BOOM! That was the number! You've Won the Game!!!!!`;
@@ -146,6 +143,14 @@ function compareGuessToNumber(guess, num) {
       return "That is too low";
     }
   }
+}
+
+function levelUp() {
+  minNum -= 10;
+  maxNum += 10;
+  displayMinMaxValues();
+  numToGuess = randomNumber();
+  console.log(numToGuess);
 }
 
 //===========================================================================================================
