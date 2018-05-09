@@ -20,6 +20,61 @@ let minNum = null;
 let maxNum = null;
 
 //===========================================================================================================
+// EVENT LISTENERS
+//===========================================================================================================
+
+// Min Max Submit Event Listener
+//========================================================
+minMaxSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
+  minNum = parseInt(minNumInput.value);
+  maxNum = parseInt(maxNumInput.value);
+  if (!minNum || !maxNum) {
+    minMaxDisplay.innerHTML = `Oooooops! You are missing some inputs!!!!`;
+    minMaxForm.reset();
+    return;
+  }
+  if (isNaN(minNumInput.value) || isNaN(maxNumInput.value)) {
+    minMaxDisplay.innerHTML = `Oooooops! Your inputs have to be numbers!!!!`;
+    minMaxForm.reset();
+    return;
+  }
+  if (!(maxNum > minNum)) {
+    minMaxDisplay.innerHTML = `Oooooops! Your Max number has to be greater than your Min number!!!`;
+    minMaxForm.reset();
+    return;
+  }
+  displayMinMaxValues();
+  numToGuess = randomNumber();
+  console.log(numToGuess);
+  minMaxForm.classList.add("display-none");
+  guessForm.classList.remove("display-none");
+  resetButton.classList.remove("display-none");
+});
+
+// Guess Input Keyup Event Listener
+//========================================================
+guessInput.addEventListener("keyup", isInputPopulated);
+
+// Guess Submit Event Listener
+//========================================================
+guessSubmit.addEventListener("click", function(e) {
+  e.preventDefault();
+  submitGuess(parseInt(guessInput.value), numToGuess);
+});
+
+// Reset Button Event Listener
+//========================================================
+resetButton.addEventListener("click", reset);
+
+// Clear Form Button Event Listener
+//========================================================
+clearFormButton.addEventListener("click", () => {
+  guessForm.reset();
+  isInputPopulated();
+});
+
+//===========================================================================================================
 // FUNCTIONS
 //===========================================================================================================
 
@@ -69,8 +124,10 @@ function displayMinMaxValues() {
 function isInputPopulated() {
   if (guessInput.value) {
     clearFormButton.disabled = false;
+    guessSubmit.disabled = false;
   } else {
     clearFormButton.disabled = true;
+    guessSubmit.disabled = true;
   }
 }
 isInputPopulated();
@@ -98,8 +155,7 @@ function reset() {
 
 // Submit Guess Function
 //========================================================
-function submitGuess(e, guess, num) {
-  e.preventDefault();
+function submitGuess(guess, num) {
   if (minNum === null || maxNum === null) {
     lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
     guessForm.reset();
@@ -159,51 +215,3 @@ function expandMinAndMax() {
   numToGuess = randomNumber();
   console.log(numToGuess);
 }
-
-//===========================================================================================================
-// EVENT LISTENERS
-//===========================================================================================================
-
-// Min Max Submit Event Listener
-//========================================================
-minMaxSubmit.addEventListener("click", function(e) {
-  e.preventDefault();
-  minNum = Number(minNumInput.value);
-  maxNum = Number(maxNumInput.value);
-  if (minNum > maxNum) {
-    minMaxDisplay.innerHTML = `Oooooops! Your Min number can't be greater than your Max number!`;
-    minMaxForm.reset();
-    return;
-  }
-  displayMinMaxValues();
-  numToGuess = randomNumber();
-  console.log(numToGuess);
-  minMaxForm.classList.add("display-none");
-  guessForm.classList.remove("display-none");
-  resetButton.classList.remove("display-none");
-});
-
-// Guess Input Keyup Event Listener
-//========================================================
-guessInput.addEventListener("keyup", function() {
-  isInputPopulated();
-});
-
-// Guess Submit Event Listener
-//========================================================
-guessSubmit.addEventListener("click", function(e) {
-  submitGuess(e, parseInt(guessInput.value), numToGuess);
-});
-
-// Reset Button Event Listener
-//========================================================
-resetButton.addEventListener("click", function() {
-  reset();
-});
-
-// Clear Form Button Event Listener
-//========================================================
-clearFormButton.addEventListener("click", () => {
-  guessForm.reset();
-  isInputPopulated();
-});
