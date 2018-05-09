@@ -128,23 +128,31 @@ function compareGuessToNumber(guess, num) {
   } else if (guess < minNum) {
     return `Oooooops! That number is too small, you need to guess a number in between ${minNum} and ${maxNum}!`;
   } else {
-    if (guess === num) {
-      gameCounter += 1;
-      if (gameCounter < 3) {
-        levelUp();
-        return `BOOM! That was the number! The Min and Max are expanding!!!`;
-      } else {
-        return `BOOM! That was the number! You've Won the Game!!!!!`;
-      }
-    } else if (guess > num) {
-      return "That is too high";
-    } else {
-      return "That is too low";
-    }
+    return isGuessEqualToNumber(guess, num);
   }
 }
 
-function levelUp() {
+function isGuessEqualToNumber(guess, num) {
+  if (guess === num) {
+    return gameCounterStatus();
+  } else if (guess > num) {
+    return "That is too high";
+  } else {
+    return "That is too low";
+  }
+}
+
+function gameCounterStatus() {
+  gameCounter += 1;
+  if (gameCounter < 3) {
+    expandMinAndMax();
+    return `BOOM! That was the number! The Min and Max are expanding!!!`;
+  } else {
+    return `BOOM! That was the number! You've Won the Game!!!!!`;
+  }
+}
+
+function expandMinAndMax() {
   minNum -= 10;
   maxNum += 10;
   displayMinMaxValues();
