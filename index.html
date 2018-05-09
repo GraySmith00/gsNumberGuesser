@@ -17,49 +17,44 @@
     </h1>
   </header>
 
-  <main>
-    <div id="min-max-display">
+  <main role="main">
+    <section id="min-max-display">
 
-    </div>
+    </section>
 
     <form id="min-max-form">
       <div class="form-inputs">
-        <input type="number" id="min-num" placeholder="min number" autocomplete="off">
-        <input type="number" id="max-num" placeholder="max number" autocomplete="off">
+        <input type="number" aria-label="min-num" id="min-num" placeholder="min number" autocomplete="off">
+        <input type="number" aria-label="max-num" id="max-num" placeholder="max number" autocomplete="off">
       </div>
       <button type="submit" id="min-max-submit">Set Min and Max</button>
     </form>
 
     <form id="guess-form">
-      <input type="number" id="guess-input" placeholder="Guess a Number!" autocomplete="off">
+      <input type="number" aria-label="guess-input" id="guess-input" placeholder="Guess a Number!" autocomplete="off">
       <div class="guess-form-buttons">
         <button type="submit" id="guess-submit">Guess</button>
         <button id="clear-form-button">Clear Form</button>
       </div>
     </form>
 
-    <div id="last-guess-was">
+    <section id="last-guess-was">
 
-    </div>
-    <div id="guess-number-display">
+    </section>
+    <section id="guess-number-display">
 
-    </div>
-    <div id="guess-alert">
+    </section>
+    <section id="guess-alert">
 
-    </div>
-    <div id="guess-counter-display">
+    </section>
+    <section id="guess-counter-display">
 
-    </div>
+    </section>
 
     <button id="reset-button">
       Reset
     </button>
-
-
   </main>
-
-
-
 
   <script type="text/javascript" src="./index.js"></script>
 </body>
