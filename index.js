@@ -13,58 +13,94 @@ const maxNumInput = document.querySelector("#max-num");
 const minMaxSubmit = document.querySelector("#min-max-submit");
 const minMaxDisplay = document.querySelector("#min-max-display");
 
-function compareGuessToNumber(guess, num, minNum, maxNum) {
-  if (isNaN(guess)) {
-    return "Ooooooops! Sorry we can only accept numbers here!";
-  }
-  if (guess > maxNum) {
-    return `Oooooops! That number is too large, you need to guess a number in between ${minNum} and ${maxNum}!`;
-  } else if (guess < minNum) {
-    return `Oooooops! That number is too small, you need to guess a number in between ${minNum} and ${maxNum}!`;
-  } else {
-    if (guess === num) {
-      return `BOOM! That was the number!`;
-    } else if (guess > num) {
-      return "That is too high";
-    } else {
-      return "That is too low";
-    }
-  }
-}
+let gameCounter = 0;
+let guessCounter = 0;
+let numToGuess = null;
+let minNum = null;
+let maxNum = null;
 
+//===========================================================================================================
+// FUNCTIONS
+//===========================================================================================================
+
+// Set Initial State Function
+//========================================================
+function setInitialState() {
+  minMaxForm.classList.remove("display-none");
+  minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
+  resetButton.classList.add("display-none");
+  guessNumberDisplay.innerHTML = ``;
+  guessAlert.innerHTML = ``;
+  guessCounter = 0;
+  guessCounterDisplay.innerHTML = ``;
+  lastGuessWas.innerHTML = "";
+  minNumInput.value = null;
+  maxNumInput.value = null;
+  minNum = null;
+  maxNum = null;
+  numToGuess = null;
+}
+setInitialState();
+
+// Are Min and Max Set? Function
+//========================================================
 function areMinAndMaxSet() {
-  if (minNumInput.value.length === 0 || maxNumInput.value.length === 0) {
+  if (minNum === null || maxNum === null) {
     guessForm.classList.add("display-none");
   }
 }
 areMinAndMaxSet();
 
-function setInitialHTML() {
-  minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
-  resetButton.classList.add("display-none");
+// Random Number Function
+//========================================================
+function randomNumber() {
+  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
 }
-setInitialHTML();
 
+// Set Min Max Values Funtion
+//========================================================
+function displayMinMaxValues() {
+  minMaxDisplay.innerHTML = `<p>Min Number: <span>${minNum}</span> Max Number: <span>${maxNum}</span></p>`;
+  isAnythingToReset();
+}
+
+// Is Input Populated? Function
+//========================================================
+function isInputPopulated() {
+  if (guessInput.value) {
+    clearFormButton.disabled = false;
+  } else {
+    clearFormButton.disabled = true;
+  }
+}
+isInputPopulated();
+
+// Is Anything to Reset? Function
+//========================================================
+function isAnythingToReset() {
+  if (!minNumInput.value && !maxNumInput.value) {
+    resetButton.disabled = true;
+  } else {
+    resetButton.disabled = false;
+  }
+}
+isAnythingToReset();
+
+// Reset Function
+//========================================================
 function reset() {
   guessForm.reset();
-  minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
-  guessNumberDisplay.innerHTML = ``;
-  guessAlert.innerHTML = ``;
-  guessCounter = 0;
-  guessCounterDisplay.innerHTML = ``;
+  setInitialState();
   isInputPopulated();
   isAnythingToReset();
-  lastGuessWas.innerHTML = "";
-  minNumInput.value = null;
-  maxNumInput.value = null;
-  numToGuess = null;
-  minMaxForm.classList.remove("display-none");
   areMinAndMaxSet();
 }
 
-function submitGuess(e, guess, num, minNum, maxNum) {
+// Submit Guess Function
+//========================================================
+function submitGuess(e, guess, num) {
   e.preventDefault();
-  if (!minNum || !maxNum) {
+  if (minNum === null || maxNum === null) {
     lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
     guessForm.reset();
     return;
@@ -73,7 +109,7 @@ function submitGuess(e, guess, num, minNum, maxNum) {
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
   guessAlert.innerHTML = `
-   ${compareGuessToNumber(parseInt(guess), num, minNum, maxNum)}`;
+   ${compareGuessToNumber(parseInt(guess), num)}`;
   guessCounterDisplay.innerHTML = `
   Guesses: ${guessCounter}
   `;
@@ -81,80 +117,92 @@ function submitGuess(e, guess, num, minNum, maxNum) {
   isAnythingToReset();
 }
 
-let guessCounter = 0;
-
-function isInputPopulated() {
-  if (guessInput.value.length > 0) {
-    clearFormButton.disabled = false;
+// Comapre Guess to Number Function
+//========================================================
+function compareGuessToNumber(guess, num) {
+  if (isNaN(guess)) {
+    return "Ooooooops! Sorry we can only accept numbers here!";
+  }
+  if (guess > maxNum) {
+    return `Oooooops! That number is too large, you need to guess a number in between ${minNum} and ${maxNum}!`;
+  } else if (guess < minNum) {
+    return `Oooooops! That number is too small, you need to guess a number in between ${minNum} and ${maxNum}!`;
   } else {
-    clearFormButton.disabled = true;
+    return isGuessEqualToNumber(guess, num);
   }
 }
-isInputPopulated();
 
-function isAnythingToReset() {
-  // console.log(minNumInput.value);
-  if (minNumInput.value.length === 0 && maxNumInput.value.length === 0) {
-    resetButton.disabled = true;
+function isGuessEqualToNumber(guess, num) {
+  if (guess === num) {
+    return gameCounterStatus();
+  } else if (guess > num) {
+    return "That is too high";
   } else {
-    resetButton.disabled = false;
+    return "That is too low";
   }
 }
-isAnythingToReset();
 
-function randomNumber(minNumStr, maxNumStr) {
-  const minNum = Number(minNumStr);
-  const maxNum = Number(maxNumStr);
-  return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+function gameCounterStatus() {
+  gameCounter += 1;
+  if (gameCounter < 3) {
+    expandMinAndMax();
+    return `BOOM! That was the number! The Min and Max are expanding!!!`;
+  } else {
+    return `BOOM! That was the number! You've Won the Game!!!!!`;
+  }
 }
 
-function setMinAndMaxValues() {
-  minMaxDisplay.innerHTML = `<p>Min Number: <span>${
-    minNumInput.value
-  }</span> Max Number: <span>${maxNumInput.value}</span></p>`;
-
-  isAnythingToReset();
+function expandMinAndMax() {
+  minNum -= 10;
+  maxNum += 10;
+  displayMinMaxValues();
+  numToGuess = randomNumber();
+  console.log(numToGuess);
 }
 
-let numToGuess = null;
+//===========================================================================================================
+// EVENT LISTENERS
+//===========================================================================================================
 
+// Min Max Submit Event Listener
+//========================================================
 minMaxSubmit.addEventListener("click", function(e) {
   e.preventDefault();
-  setMinAndMaxValues();
-  lastGuessWas.innerHTML = ``;
-  numToGuess = randomNumber(minNumInput.value, maxNumInput.value);
-  minMaxForm.classList.add("display-none");
+  minNum = Number(minNumInput.value);
+  maxNum = Number(maxNumInput.value);
+  if (minNum > maxNum) {
+    minMaxDisplay.innerHTML = `Oooooops! Your Min number can't be greater than your Max number!`;
+    minMaxForm.reset();
+    return;
+  }
+  displayMinMaxValues();
+  numToGuess = randomNumber();
   console.log(numToGuess);
+  minMaxForm.classList.add("display-none");
   guessForm.classList.remove("display-none");
   resetButton.classList.remove("display-none");
 });
 
+// Guess Input Keyup Event Listener
+//========================================================
 guessInput.addEventListener("keyup", function() {
   isInputPopulated();
 });
 
-minNumInput.addEventListener("keyup", function() {
-  isInputPopulated();
-});
-
-maxNumInput.addEventListener("keyup", function() {
-  isInputPopulated();
-});
-
+// Guess Submit Event Listener
+//========================================================
 guessSubmit.addEventListener("click", function(e) {
-  submitGuess(
-    e,
-    guessInput.value,
-    numToGuess,
-    minNumInput.value,
-    maxNumInput.value
-  );
+  submitGuess(e, parseInt(guessInput.value), numToGuess);
 });
 
+// Reset Button Event Listener
+//========================================================
 resetButton.addEventListener("click", function() {
-  reset(1, 100);
+  reset();
 });
 
+// Clear Form Button Event Listener
+//========================================================
 clearFormButton.addEventListener("click", () => {
   guessForm.reset();
   isInputPopulated();
