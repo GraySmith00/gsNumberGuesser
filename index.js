@@ -12,12 +12,18 @@ const minNumInput = document.querySelector("#min-num");
 const maxNumInput = document.querySelector("#max-num");
 const minMaxSubmit = document.querySelector("#min-max-submit");
 const minMaxDisplay = document.querySelector("#min-max-display");
+const mathTeacherDisplay = document.querySelector("#math-teacher");
+const mathAnswerForm = document.querySelector("#math-answer-form");
+const mathAnswerInput = document.querySelector("#math-answer-input");
+const mathAnswerSubmit = document.querySelector("#math-answer-submit");
+const mathAnswerDisplay = document.querySelector("#math-answer-display");
 
 let gameCounter = 0;
 let guessCounter = 0;
 let numToGuess = null;
 let minNum = null;
 let maxNum = null;
+let firstGuess;
 
 //===========================================================================================================
 // EVENT LISTENERS
@@ -72,6 +78,10 @@ resetButton.addEventListener("click", reset);
 clearFormButton.addEventListener("click", () => {
   guessForm.reset();
   isInputPopulated();
+});
+
+mathAnswerSubmit.addEventListener("click", e => {
+  e.preventDefault;
 });
 
 //===========================================================================================================
@@ -161,6 +171,9 @@ function submitGuess(guess, num) {
     guessForm.reset();
     return;
   }
+  if (guessCounter === 0) {
+    firstGuess = guess;
+  }
   guessCounter += 1;
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
@@ -190,7 +203,7 @@ function compareGuessToNumber(guess, num) {
 
 function isGuessEqualToNumber(guess, num) {
   if (guess === num) {
-    return gameCounterStatus();
+    return gameCounterStatus(guess, num);
   } else if (guess > num) {
     return "That is too high";
   } else {
@@ -198,11 +211,26 @@ function isGuessEqualToNumber(guess, num) {
   }
 }
 
-function gameCounterStatus() {
+function gameCounterStatus(guess, num) {
   gameCounter += 1;
   if (gameCounter < 3) {
     expandMinAndMax();
-    return `BOOM! That was the number! The Min and Max are expanding!!!`;
+    let mathAnswerOne = (num - firstGuess) * guessCounter;
+    mathTeacherDisplay.innerHTML = `
+    <h3>Let's Continue, but first a math problem:</h3>
+    <p>The number was: ${num}</p>
+    <p>Your first guess was: ${firstGuess}</p>
+    <p>It took you ${guessCounter} guesses</p>
+    <p>What is (${num} - ${firstGuess}) * ${guessCounter}</p>
+    `;
+
+    if (mathAnswerInput) {
+      Number(mathAnswerInput.value) === mathAnswerOne
+        ? (mathAnswerDisplay.innerHTML = `Correct`)
+        : (mathAnswerDisplay.innerHTML = `Oops try again`);
+    }
+
+    return `BOOM! ${guess} was the number! The Min and Max are expanding!!!`;
   } else {
     return `BOOM! That was the number! You've Won the Game!!!!!`;
   }
