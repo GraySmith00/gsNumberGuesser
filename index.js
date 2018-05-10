@@ -95,6 +95,7 @@ function setInitialState() {
   guessAlert.innerHTML = ``;
   totalGuessCounter = 0;
   roundGuessCounter = 0;
+  gameCounter = 0;
   guessCounterDisplay.innerHTML = ``;
   lastGuessWas.innerHTML = '';
   minNumInput.value = null;
