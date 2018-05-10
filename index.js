@@ -19,7 +19,8 @@ const mathAnswerSubmit = document.querySelector("#math-answer-submit");
 const mathAnswerDisplay = document.querySelector("#math-answer-display");
 
 let gameCounter = 0;
-let guessCounter = 0;
+let totalGuessCounter = 0;
+let roundGuessCounter = 0;
 let numToGuess = null;
 let minNum = null;
 let maxNum = null;
@@ -80,10 +81,6 @@ clearFormButton.addEventListener("click", () => {
   isInputPopulated();
 });
 
-mathAnswerSubmit.addEventListener("click", e => {
-  e.preventDefault;
-});
-
 //===========================================================================================================
 // FUNCTIONS
 //===========================================================================================================
@@ -96,7 +93,8 @@ function setInitialState() {
   resetButton.classList.add("display-none");
   guessNumberDisplay.innerHTML = ``;
   guessAlert.innerHTML = ``;
-  guessCounter = 0;
+  totalGuessCounter = 0;
+  roundGuessCounter = 0;
   guessCounterDisplay.innerHTML = ``;
   lastGuessWas.innerHTML = "";
   minNumInput.value = null;
@@ -171,16 +169,17 @@ function submitGuess(guess, num) {
     guessForm.reset();
     return;
   }
-  if (guessCounter === 0) {
+  if (roundGuessCounter === 0) {
     firstGuess = guess;
   }
-  guessCounter += 1;
+  totalGuessCounter += 1;
+  roundGuessCounter += 1;
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
   guessAlert.innerHTML = `
    ${compareGuessToNumber(parseInt(guess), num)}`;
   guessCounterDisplay.innerHTML = `
-  Guesses: ${guessCounter}
+  Total Guesses: ${totalGuessCounter}
   `;
   guessForm.reset();
   isAnythingToReset();
@@ -215,22 +214,46 @@ function gameCounterStatus(guess, num) {
   gameCounter += 1;
   if (gameCounter < 3) {
     expandMinAndMax();
-    let mathAnswerOne = (num - firstGuess) * guessCounter;
+
+    minMaxDisplay.classList.add("display-none");
+    guessForm.classList.add("display-none");
+    mathTeacherDisplay.classList.remove("display-none");
+    mathAnswerForm.classList.remove("display-none");
+    mathAnswerDisplay.innerHTML = "";
+    mathAnswerDisplay.classList.remove("display-none");
+
+    let mathAnswerOne = (num - firstGuess) * totalGuessCounter;
+
     mathTeacherDisplay.innerHTML = `
     <h3>Let's Continue, but first a math problem:</h3>
     <p>The number was: ${num}</p>
     <p>Your first guess was: ${firstGuess}</p>
-    <p>It took you ${guessCounter} guesses</p>
-    <p>What is (${num} - ${firstGuess}) * ${guessCounter}</p>
+    <p>You've taken ${totalGuessCounter} ${
+      totalGuessCounter === 1 ? "guess" : "total guesses"
+    }</p>
+    <p>What is (${num} - ${firstGuess}) * ${totalGuessCounter}</p>
     `;
 
-    if (mathAnswerInput) {
-      Number(mathAnswerInput.value) === mathAnswerOne
-        ? (mathAnswerDisplay.innerHTML = `Correct`)
-        : (mathAnswerDisplay.innerHTML = `Oops try again`);
-    }
+    mathAnswerSubmit.addEventListener("click", e => {
+      e.preventDefault();
 
-    return `BOOM! ${guess} was the number! The Min and Max are expanding!!!`;
+      if (Number(mathAnswerInput.value) === mathAnswerOne) {
+        guessAlert.innerHTML = `${
+          mathAnswerInput.value
+        } is Correct! Let's move on! The Min and Max are <span>expanding!!!!</span>`;
+        minMaxDisplay.classList.remove("display-none");
+        guessForm.classList.remove("display-none");
+        mathTeacherDisplay.classList.add("display-none");
+        mathAnswerForm.classList.add("display-none");
+        mathAnswerDisplay.classList.add("display-none");
+        mathAnswerForm.reset();
+      } else {
+        mathAnswerDisplay.innerHTML = `Oops try again`;
+      }
+    });
+
+    roundGuessCounter = 0;
+    return `BOOM! ${guess} was the number!!!!`;
   } else {
     return `BOOM! That was the number! You've Won the Game!!!!!`;
   }
