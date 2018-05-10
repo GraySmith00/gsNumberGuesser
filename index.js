@@ -26,17 +26,11 @@ let minNum = null;
 let maxNum = null;
 let firstGuess;
 
-//=======================================================kj====================================================
-// EVENT LISTENERS
-//===========================================================================================================
-
-// Min Max Submit Event Listener
-//========================================================
 minMaxSubmit.addEventListener('click', function(e) {
   e.preventDefault();
   minNum = parseInt(minNumInput.value);
   maxNum = parseInt(maxNumInput.value);
-  if (!minNum || !maxNum) {
+  if (minNumInput.value.length === 0 || maxNumInput.value.length === 0) {
     minMaxDisplay.innerHTML = `Oooooops! You are missing some inputs!!!!`;
     minMaxForm.reset();
     return;
@@ -59,34 +53,20 @@ minMaxSubmit.addEventListener('click', function(e) {
   resetButton.classList.remove('display-none');
 });
 
-// Guess Input Keyup Event Listener
-//========================================================
 guessInput.addEventListener('keyup', isInputPopulated);
 
-// Guess Submit Event Listener
-//========================================================
 guessSubmit.addEventListener('click', function(e) {
   e.preventDefault();
   submitGuess(parseInt(guessInput.value), numToGuess);
 });
 
-// Reset Button Event Listener
-//========================================================
 resetButton.addEventListener('click', reset);
 
-// Clear Form Button Event Listener
-//========================================================
 clearFormButton.addEventListener('click', () => {
   guessForm.reset();
   isInputPopulated();
 });
 
-//===========================================================================================================
-// FUNCTIONS
-//===========================================================================================================
-
-// Set Initial State Function
-//========================================================
 function setInitialState() {
   minMaxForm.classList.remove('display-none');
   minMaxDisplay.innerHTML = `Set the min and max to start the game!`;
@@ -106,8 +86,6 @@ function setInitialState() {
 }
 setInitialState();
 
-// Are Min and Max Set? Function
-//========================================================
 function areMinAndMaxSet() {
   if (minNum === null || maxNum === null) {
     guessForm.classList.add('display-none');
@@ -115,34 +93,26 @@ function areMinAndMaxSet() {
 }
 areMinAndMaxSet();
 
-// Random Number Function
-//========================================================
 function randomNumber() {
   return Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
 }
 
-// Set Min Max Values Funtion
-//========================================================
 function displayMinMaxValues() {
   minMaxDisplay.innerHTML = `<p>Min Number: <span>${minNum}</span> Max Number: <span>${maxNum}</span></p>`;
   isAnythingToReset();
 }
 
-// Is Input Populated? Function
-//========================================================
 function isInputPopulated() {
+  var enabled = true;
+
   if (guessInput.value) {
-    clearFormButton.disabled = false;
-    guessSubmit.disabled = false;
-  } else {
-    clearFormButton.disabled = true;
-    guessSubmit.disabled = true;
+    enabled = false;
   }
+  clearFormButton.disabled = enabled;
+  guessSubmit.disabled = enabled;
 }
 isInputPopulated();
 
-// Is Anything to Reset? Function
-//========================================================
 function isAnythingToReset() {
   if (!minNumInput.value && !maxNumInput.value) {
     resetButton.disabled = true;
@@ -152,8 +122,6 @@ function isAnythingToReset() {
 }
 isAnythingToReset();
 
-// Reset Function
-//========================================================
 function reset() {
   guessForm.reset();
   setInitialState();
@@ -162,8 +130,6 @@ function reset() {
   areMinAndMaxSet();
 }
 
-// Submit Guess Function
-//========================================================
 function submitGuess(guess, num) {
   if (minNum === null || maxNum === null) {
     lastGuessWas.innerHTML = `Ooooops! Need to set the min and max before we can play!`;
@@ -178,16 +144,15 @@ function submitGuess(guess, num) {
   lastGuessWas.innerHTML = `Your last guess was`;
   guessNumberDisplay.innerHTML = `${guess}`;
   guessAlert.innerHTML = `
-   ${compareGuessToNumber(parseInt(guess), num)}`;
+    ${compareGuessToNumber(parseInt(guess), num)}
+  `;
   guessCounterDisplay.innerHTML = `
-  Total Guesses: ${totalGuessCounter}
+    Total Guesses: ${totalGuessCounter}
   `;
   guessForm.reset();
   isAnythingToReset();
 }
 
-// Comapre Guess to Number Function
-//========================================================
 function compareGuessToNumber(guess, num) {
   if (isNaN(guess)) {
     return 'Ooooooops! Sorry we can only accept numbers here!';
@@ -196,9 +161,8 @@ function compareGuessToNumber(guess, num) {
     return `Oooooops! That number is too large, you need to guess a number in between ${minNum} and ${maxNum}!`;
   } else if (guess < minNum) {
     return `Oooooops! That number is too small, you need to guess a number in between ${minNum} and ${maxNum}!`;
-  } else {
-    return isGuessEqualToNumber(guess, num);
   }
+  return isGuessEqualToNumber(guess, num);
 }
 
 function isGuessEqualToNumber(guess, num) {
@@ -236,13 +200,13 @@ function mathProblem(num) {
   let mathAnswerOne = (num - firstGuess) * totalGuessCounter;
 
   mathTeacherDisplay.innerHTML = `
-  <h3>Let's Continue, but first a math problem:</h3>
-  <p>The number was: ${num}</p>
-  <p>Your first guess was: ${firstGuess}</p>
-  <p>You've taken ${totalGuessCounter} ${
+    <h3>Let's Continue, but first a math problem:</h3>
+    <p>The number was: ${num}</p>
+    <p>Your first guess was: ${firstGuess}</p>
+    <p>You've taken ${totalGuessCounter} ${
     totalGuessCounter === 1 ? 'guess' : 'total guesses'
   }</p>
-  <p>What is (${num} - ${firstGuess}) * ${totalGuessCounter}</p>
+    <p>What is (${num} - ${firstGuess}) * ${totalGuessCounter}</p>
   `;
 
   mathAnswerSubmit.addEventListener('click', e => {
