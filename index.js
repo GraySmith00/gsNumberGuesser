@@ -53,12 +53,14 @@ minMaxSubmit.addEventListener('click', function(e) {
   resetButton.classList.remove('display-none');
 });
 
+
 guessInput.addEventListener('keyup', isInputPopulated);
 
 guessSubmit.addEventListener('click', function(e) {
   e.preventDefault();
   submitGuess(parseInt(guessInput.value), numToGuess);
 });
+
 
 resetButton.addEventListener('click', reset);
 
